@@ -210,7 +210,7 @@ class Algorithms{
                 break;
             } //se for o node que procuramos paramos
             if(alfa.depth<depth){ queue.addAll(0,sons(alfa,height,width,visited)); }//so adiciona os filhos se ainda nao tiver chegado a profundidade objetiva
-            }
+
         } while(!queue.isEmpty());
 
         if(!flag){ visited=null; }                          //passa a visited a null para a outra funcao saber que nao foi encontrado o node
