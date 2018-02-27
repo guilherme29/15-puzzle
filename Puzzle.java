@@ -169,9 +169,7 @@ class Algorithms{
         do{
             alfa=queue.removeFirst();
             Node.print(alfa,height,width);
-            System.out.println("<<<<<");
             if(Node.compare(alfa,objective,height,width)){
-                System.out.println("oi");
                 flag = true;
                 break;
             } //se for o node que procuramos paramos
@@ -179,8 +177,8 @@ class Algorithms{
 
         } while(!queue.isEmpty());
 
-        if(flag){ path_print(alfa,height,width); }          //se houver solucao da print
-        else{ System.out.println("Solucao nao encontrada."); }//se nao houver solucao diz que nao ha
+        if(!flag){ System.out.println("Solucao nao encontrada."); }          //se houver solucao da print
+        else{ path_print(alfa,height,width); }//se nao houver solucao diz que nao ha
     }
     //1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0
     //1 2 3 4 5 6 8 12 13 9 0 7 14 11 10 15
@@ -191,7 +189,6 @@ class Algorithms{
         for(int i=0;;i++){
             visited=ldfs2(source,objective,height,width,i);//faz-se ldfs para uma depth cada vez maior
             if(visited!=null){ break; }                     //se nao retornar null entao e porque encontrou o node
-            System.out.println("---->" + i);
         }
         Node alfa = visited.removeFirst();                  //o node objective vai estar na primeira posicao pois a lista visited funciona por addFirst por ser mais rapida assim
         path_print(alfa,height,width);
@@ -207,17 +204,16 @@ class Algorithms{
         boolean flag = false;
         do{
             alfa=queue.removeFirst();
-            if(alfa.depth<=depth){
-                if(Node.compare(alfa,objective,height,width)){
-                    flag = true;                            //encontrou uma solucao
-                    System.out.println("HELLO");
-                    break;                                  //sai do loop
-                }
-                if(alfa.depth<depth){ queue.addAll(0,sons(alfa,height,width,visited)); }
+            Node.print(alfa,height,width);
+            if(Node.compare(alfa,objective,height,width)){
+                flag = true;
+                break;
+            } //se for o node que procuramos paramos
+            if(alfa.depth<depth){ queue.addAll(0,sons(alfa,height,width,visited)); }//so adiciona os filhos se ainda nao tiver chegado a profundidade objetiva
             }
         } while(!queue.isEmpty());
-        System.out.println("EH LA");
-        if(!flag){ System.out.println("oi"); visited=null; }                          //passa a visited a null para a outra funcao saber que nao foi encontrado o node
+
+        if(!flag){ visited=null; }                          //passa a visited a null para a outra funcao saber que nao foi encontrado o node
         else{
             Node novo_alfa = Node.clone(height,width,alfa); //alfa era um apontador e nao um node, por isso temos de criar outro com as mesmas caracteristicas
             visited.addFirst(novo_alfa);                    //adiciona-se o alfa de novo a fila dos visitados para ficar a cabeca e nao aumentar a ordem (depois removemos)                                           //retorna a LinkedList dos visitados que de certeza tem o caminho e tem o node objetivo a cabeca
