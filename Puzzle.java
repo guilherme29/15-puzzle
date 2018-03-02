@@ -17,9 +17,14 @@ class Puzzle{
         Node beta = new Node(height,width);
         System.out.println("Resposta passo a passo:");
         //Algorithms.bfs(alfa,beta,height,width);
-        Algorithms.bfs(beta,alfa,height,width);
+        Algorithms.idfs(beta,alfa,height,width);
     }
 }
+/*
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0
+1 2 3 4 5 6 8 12 13 9 0 7 14 11 10 15
+
+*/
 
 class Node{
     int[][] matrix;
@@ -96,7 +101,8 @@ class Node{
 
 
 class Algorithms{
-    private static LinkedList<Node> sons(Node parent, int height, int width, LinkedList<Node> visited){
+    private static LinkedList<Node> sons(Node parent,
+    int height, int width, LinkedList<Node> visited){
         //funcao para gerar uma lista com os filhos dum dado node
         LinkedList<Node> sons = new LinkedList<Node>();
         int[][] movements = {{0,-1},{0,1},{-1,0},{1,0}};    //lista dos movimentos possiveis: CIMA,BAIXO,DIREITA,ESQUERDA
@@ -128,6 +134,40 @@ class Algorithms{
         return sons;
     }
 
+    private static LinkedList<Node> sons(Node parent, int height, int width, int maxdepth, LinkedList<Node> visited){
+        //nesta a depth e levada em consideracao quando comparando dois nos - isto e importante numa funcao como o idfs
+        LinkedList<Node> sons = new LinkedList<Node>();
+        int[][] movements = {{0,-1},{0,1},{-1,0},{1,0}};    //lista dos movimentos possiveis: CIMA,BAIXO,DIREITA,ESQUERDA
+        for(int k=0;k<4;k++){
+            int vertical = parent.zero_height + movements[k][0];                   //indices depois dum movimento, tanto vertical como horizontal
+            int horizontal = parent.zero_width + movements[k][1];
+
+            if(vertical>=0 && vertical<height && horizontal>=0 && horizontal<width){    //os movimentos nao podem sair do quadro
+                Node son = new Node(height,width,parent);
+                //atualizacao da configuracao da matriz do filho que ao inicio era igual a do pai
+                son.matrix[son.zero_height][son.zero_width] = son.matrix[vertical][horizontal];
+                son.matrix[vertical][horizontal]=0;
+                son.zero_height=vertical;                   //atualizacao da nova posicao do 0
+                son.zero_width=horizontal;
+
+                boolean flag = true;                        //muda para falso se o no ja tiver sido visitado
+                for(Node test : visited){                   //vemos se o no e igual a algum ja visitado
+                    if(Node.compare(son,test,height,width)){
+                        flag=false;
+                        break;
+                    }
+                }
+                if(flag){
+                    if(son.depth<maxdepth){                 //nao o vamos marcar como visitado se estiver no ultimo nivel para evitar ficar sem filhos no futuro
+                        visited.addFirst(son);
+                    }
+                    sons.addFirst(son);
+                }
+            }
+        }
+        return sons;
+    }
+
     public static void bfs(Node source, Node objective, int height, int width){
         LinkedList<Node> queue = new LinkedList<Node>();    //fila
         LinkedList<Node> visited = new LinkedList<Node>();  //lista de nos ja visitados
@@ -136,7 +176,7 @@ class Algorithms{
         Node alfa;  //vai servir para examinar cada node
         do {
             alfa=queue.removeFirst();                       //tira-se o primeiro node da fila
-            if(Node.compare(alfa,objective,height,width)){ break; }      //se for o node que procuramos paramos
+            if(Node.compare(alfa,objective,height,width)){ break; }//se for o node que procuramos paramos
             queue.addAll(sons(alfa,height,width,visited));  //adiciona-se os filhos ao final da fila e marcam-se como visitados
         } while(!queue.isEmpty());
 
@@ -144,7 +184,8 @@ class Algorithms{
     }
 
 
-    public static void dfs(Node source, Node objective, int height, int width){
+    public static void dfs(Node source,
+    Node objective, int height, int width){
         LinkedList<Node> queue = new LinkedList<Node>();    //pilha
         LinkedList<Node> visited = new LinkedList<Node>();  //lista de nos ja visitados
 
@@ -160,7 +201,8 @@ class Algorithms{
     }
 
 
-    public static void ldfs(Node source, Node objective, int height, int width, int depth){//busca limitada em profundidade
+    public static void ldfs(Node source,
+    Node objective, int height, int width, int depth){//busca limitada em profundidade
         LinkedList<Node> queue = new LinkedList<Node>();
         LinkedList<Node> visited = new LinkedList<Node>();
         queue.addLast(source);
@@ -173,7 +215,7 @@ class Algorithms{
                 flag = true;
                 break;
             } //se for o node que procuramos paramos
-            if(alfa.depth<depth){ queue.addAll(0,sons(alfa,height,width,visited)); }//so adiciona os filhos se ainda nao tiver chegado a profundidade objetiva
+            if(alfa.depth<depth){ queue.addAll(0,sons(alfa,height,width,depth,visited)); }//so adiciona os filhos se ainda nao tiver chegado a profundidade objetiva
 
         } while(!queue.isEmpty());
 
@@ -182,7 +224,8 @@ class Algorithms{
     }
 
 
-    public static void idfs(Node source, Node objective, int height, int width){//busca iterativa em profundidade
+    public static void idfs(Node source,
+    Node objective, int height, int width){//busca iterativa em profundidade
         LinkedList<Node> visited = new LinkedList<Node>();
         for(int i=0;;i++){
             visited=ldfs2(source,objective,height,width,i); //faz-se ldfs para uma depth cada vez maior
@@ -193,7 +236,8 @@ class Algorithms{
     }
 
 
-    private static LinkedList<Node> ldfs2(Node source, Node objective, int height, int width, int depth){
+    private static LinkedList<Node> ldfs2(Node source,
+    Node objective, int height, int width, int depth){
         //a diferenca desta para a outra idfs e que esta e auxiliar, retornando uma LinkedList que tem a cabeca o no objectivo. se o no nao for encontrado retorna null
         LinkedList<Node> queue = new LinkedList<Node>();
         LinkedList<Node> visited = new LinkedList<Node>();
@@ -207,7 +251,7 @@ class Algorithms{
                 flag = true;
                 break;                                      //se for o node que procuramos paramos
             }
-            if(alfa.depth<depth){ queue.addAll(0,sons(alfa,height,width,visited)); }//so adiciona os filhos se ainda nao tiver chegado a profundidade objetiva
+            if(alfa.depth<depth){ queue.addAll(0,sons(alfa,height,width,depth,visited)); }//so adiciona os filhos se ainda nao tiver chegado a profundidade objetiva
 
         } while(!queue.isEmpty());
 
