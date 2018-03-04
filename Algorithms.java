@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 class Algorithms {
 
@@ -147,4 +148,19 @@ class Algorithms {
         if(flag){Node.path_print(alfa,height,width);}
         else{System.out.println("Solucao nao encontrada.");}
     }
+
+
+    public static void greedy(
+    Node source, Node objective, int height, int width){
+        PriorityQueue<Node> queue = new PriorityQueue<>();
+        queue.add(source);
+        Node alfa;
+        do{
+            alfa = queue.poll();
+            if(Node.compare(alfa,objective,height,width)){break; }
+            queue.addAll(sons(alfa,height,width));
+        } while(!queue.isEmpty());
+        Node.path_print(alfa,height,width);
+    }
+
 }
