@@ -8,7 +8,7 @@ class Solve{
     }
 
 
-    private static int Solvability(
+    public static int Solvability(
     Node source, Node objective, int height, int width){
         if(width%2 == 1){return -1;} //nao se pode concluir nada (os slides da professora so explicam caso seja par)
         else{
