@@ -199,4 +199,23 @@ class Algorithms {
         Node.path_print(alfa,height,width);
     }
 
+
+    public static void a_star(
+    Node source, Node objective, int height, int width){
+        PriorityQueue<Node> queue = new PriorityQueue<>();
+        LinkedList<Node> visited = new LinkedList<>();
+        queue.add(source);
+        Node alfa;
+        do{
+            alfa = queue.poll();
+            if(Node.compare(alfa,objective,height,width)){break; }
+            LinkedList<Node> auxlist = sons(alfa,objective,height,width,visited);
+            for(Node aux : auxlist){ //adicionamos aos nos a pontuacao do pai
+                aux.score = aux.score + aux.parent.score;
+            }
+            queue.addAll(auxlist);//adicionamos os nos ja pontuados a PriorityQueue
+        } while(!queue.isEmpty());
+        Node.path_print(alfa,height,width);
+    }
+
 }
