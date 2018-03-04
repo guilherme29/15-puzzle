@@ -4,7 +4,7 @@ class Solve{
         int aux = Solvability(source,objective,height,width);
         if(aux == -1){System.out.println("Largura impar, impossivel saber se ha solucao.");}
         else if(aux == 0){System.out.println("Nao tem solucao.");}
-        else{System.out.println("Tem solucao.");}
+        //else{System.out.println("Tem solucao.");}
     }
 
 
