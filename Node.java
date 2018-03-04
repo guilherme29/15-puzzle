@@ -96,7 +96,7 @@ class Node implements Comparable<Node>{
 
     public static void score(Node alfa, Node objective, int height, int width){
         for(int j=0;j<height;j++){//percorremos a node alfa
-            for(int i=0;i<height;i++){
+            for(int i=0;i<width;i++){
                 boolean flag = true;
                 int aux1 = 0,aux2 = 0;
                 for(int m=0;m<height&&flag;m++){
@@ -117,12 +117,14 @@ class Node implements Comparable<Node>{
     public static int[] createArray(Node alfa, int height, int width){
         int[] array = new int[height*width];
         int k = 0;
-        for(int i=0;i<height;i++){
-            for(int j=0;j<width;j++){
+        for(int j=0;j<height;j++){
+            for(int i=0;i<width;i++){
                 array[k] = alfa.matrix[j][i];
                 k++;
             }
         }
+        for(int i=0;i<array.length;i++) System.out.print(array[i] + " ");
+        System.out.println();
         return array;
     }
 }
