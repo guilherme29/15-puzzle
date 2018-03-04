@@ -112,4 +112,17 @@ class Node implements Comparable<Node>{
             }
         }
     }
+
+
+    public static int[] createArray(Node alfa, int height, int width){
+        int[] array = new int[height*width];
+        int k = 0;
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
+                array[k] = alfa.matrix[j][i];
+                k++;
+            }
+        }
+        return array;
+    }
 }
