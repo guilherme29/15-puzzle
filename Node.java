@@ -1,11 +1,13 @@
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.lang.Math.*;
 
-class Node{
+class Node implements Comparable<Node>{
     int[][] matrix;
     Node parent;
     int zero_height, zero_width;
     int depth;
+    int score;
 
     public Node(int height, int width){
         matrix = new int[height][width];
@@ -85,4 +87,36 @@ class Node{
     }
 
 
+    public int compareTo(Node beta){
+        if(this.score < beta.score){return -1;}
+        else if(this.score == beta.score){return 0;}
+        else return 1;
+    }
+
+
+    public static void score(Node alfa, Node objective, int height, int width){
+        for(int j=0;j<height;j++){//percorremos a node alfa
+            for(int i=0;i<height;i++){
+                if(alfa.matrix[j][i] == 0) continue;//nao damos pontuacao ao 0 fora do sitio
+                boolean flag = true;
+                int aux1 = 0,aux2 = 0;
+                for(int m=0;m<height&&flag;m++){
+                    for(int n=0;n<width;n++){
+                        if(alfa.matrix[j][i] == objective.matrix[m][n]){
+                            flag = false;
+                            aux1 = m;
+                            aux2 = n;
+
+                            System.out.print("alfa.matrix[" + j + "]" + "["+ i + "] == ");
+                            System.out.println("objective.matrix[" + m + "]" + "["+ n + "]");
+
+                            break;}
+                    }
+                }
+                alfa.score = alfa.score + Math.abs(j-aux1) + Math.abs(i-aux2);//atribuicao da pontuacao
+                System.out.println("score = " + alfa.score);
+            }
+        }
+        System.out.println("-->" + alfa.score);
+    }
 }
