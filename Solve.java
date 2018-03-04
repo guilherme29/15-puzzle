@@ -1,8 +1,16 @@
 
 
-abstract class Solve{
+class Solve{
+    public void hasSolution(
+    Node source, Node objective, int height, int width){
+        int aux = Solvability(source,objective,height,width);
+        if(aux == -1){System.out.println("Largura impar, impossivel saber se ha solucao.");}
+        else if(aux == 0){System.out.println("Nao tem solucao.");}
+        else{System.out.println("Tem solucao.");}
+    }
 
-    int Solvability(
+
+    private int Solvability(
     Node source, Node objective, int height, int width){
         if(width%2 == 0){return -1;} //nao se pode concluir nada (os slides da professora so explicam caso seja par)
         else{
@@ -14,7 +22,7 @@ abstract class Solve{
     }
 
 
-    private static int inversion(int[] source){
+    private int inversion(int[] source){
         int inv_count = 0;
         for(int i=0;i<source.length;i++){//corremos o vetor source e comparamos todos os pares
             for(int j=i+1;j<source.length;j++){
@@ -27,7 +35,7 @@ abstract class Solve{
     }
 
 
-    private static boolean blankRowSolve(Node alfa, int height){
+    private boolean blankRowSolve(Node alfa, int height){
         if(height%2 == 0){
         //a paridade mantem-se se enumerarmos as linhas começando em 1 de baixo para cima
             if(alfa.zero_height%2 == 0){return false;} //queremos que blankRow % 2 == 1 e nao e o caso
