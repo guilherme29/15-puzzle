@@ -58,6 +58,41 @@ class Algorithms {
     }
 
 
+    private static LinkedList<Node> sons(//esta funcao tambem atribui score aos nodes quando os poe na lista
+    Node parent, Node objective, int height, int width, LinkedList<Node> visited){
+        //overload da sons mas faz verificaco de visitados antes de devolver a linkedlist
+        LinkedList<Node> sons = new LinkedList<Node>();
+        int[][] movements = {{0,-1},{0,1},{-1,0},{1,0}};//lista dos movimentos possiveis: CIMA,BAIXO,DIREITA,ESQUERDA
+        for(int k=0;k<4;k++){
+            int vertical = parent.zero_height + movements[k][0];//indices depois dum movimento, tanto vertical como horizontal
+            int horizontal = parent.zero_width + movements[k][1];
+
+            if(vertical>=0 && vertical<height && horizontal>=0 && horizontal<width){//os movimentos nao podem sair do quadro
+                Node son = Node.son(height,width,parent);
+                //atualizacao da configuracao da matriz do filho que ao inicio era igual a do pai
+                son.matrix[son.zero_height][son.zero_width] = son.matrix[vertical][horizontal];
+                son.matrix[vertical][horizontal]=0;
+                son.zero_height=vertical;//atualizacao da nova posicao do 0
+                son.zero_width=horizontal;
+
+                boolean flag = true;//muda para falso se o no ja tiver sido visitado
+                for(Node test : visited){//vemos se o no e igual a algum ja visitado
+                    if(Node.compare(son,test,height,width)){
+                        flag=false;
+                        break;
+                    }
+                }
+                if(flag){
+                    Node.score(son,objective,height,width);
+                    visited.addFirst(son);//o no e marcado como visitado, adicionado ao inicio para ser mais rapido, pois e mais provavel encontrar um no mais recentemente do que ha mais tempo
+                    sons.addFirst(son);//e adicionado a fila de filhos, adicionado ao inicio para ser mais rapido (aqui a diferenca e pouca pois ha no maximo 4 filhos)
+                }
+            }
+        }
+        return sons;
+    }
+
+
     public static void bfs(
     Node source, Node objective, int height, int width){
         LinkedList<Node> queue = new LinkedList<>();//fila
@@ -153,12 +188,13 @@ class Algorithms {
     public static void greedy(
     Node source, Node objective, int height, int width){
         PriorityQueue<Node> queue = new PriorityQueue<>();
+        LinkedList<Node> visited = new LinkedList<>();
         queue.add(source);
         Node alfa;
         do{
             alfa = queue.poll();
             if(Node.compare(alfa,objective,height,width)){break; }
-            queue.addAll(sons(alfa,height,width));
+            queue.addAll(sons(alfa,objective,height,width,visited));
         } while(!queue.isEmpty());
         Node.path_print(alfa,height,width);
     }
