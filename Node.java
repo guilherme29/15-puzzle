@@ -97,26 +97,19 @@ class Node implements Comparable<Node>{
     public static void score(Node alfa, Node objective, int height, int width){
         for(int j=0;j<height;j++){//percorremos a node alfa
             for(int i=0;i<height;i++){
-                if(alfa.matrix[j][i] == 0) continue;//nao damos pontuacao ao 0 fora do sitio
                 boolean flag = true;
                 int aux1 = 0,aux2 = 0;
                 for(int m=0;m<height&&flag;m++){
                     for(int n=0;n<width;n++){
-                        if(alfa.matrix[j][i] == objective.matrix[m][n]){
+                        if(alfa.matrix[j][i] == objective.matrix[m][n]){//quando encontramos a posicao objetivo guardamos e saimos do loop
                             flag = false;
                             aux1 = m;
                             aux2 = n;
-
-                            System.out.print("alfa.matrix[" + j + "]" + "["+ i + "] == ");
-                            System.out.println("objective.matrix[" + m + "]" + "["+ n + "]");
-
                             break;}
                     }
                 }
                 alfa.score = alfa.score + Math.abs(j-aux1) + Math.abs(i-aux2);//atribuicao da pontuacao
-                System.out.println("score = " + alfa.score);
             }
         }
-        System.out.println("-->" + alfa.score);
     }
 }
