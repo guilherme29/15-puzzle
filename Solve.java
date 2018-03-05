@@ -1,22 +1,24 @@
 class Solve{
     public static void hasSolution(
     Node source, Node objective, int height, int width){
-        int aux = Solvability(source,objective,height,width);
-        if(aux == -1){System.out.println("Largura impar, impossivel saber se ha solucao.");}
-        else if(aux == 0){System.out.println("Nao tem solucao.");}
+        boolean aux = Solvability(source,objective,height,width);
+        if(!aux){System.out.println("Nao tem solucao.");}
         //else{System.out.println("Tem solucao.");}
     }
 
 
-    public static int Solvability(
+    public static boolean Solvability(
     Node source, Node objective, int height, int width){
-        if(width%2 == 1){return -1;} //nao se pode concluir nada (os slides da professora so explicam caso seja par)
-        else{
-            boolean a = (inversion(Node.createArray(source,height,width))%2 == 0) == blankRowSolve(source,height);
-            boolean b = (inversion(Node.createArray(objective,height,width))%2 == 0) == blankRowSolve(objective,height);
-            if(a == b) return 1;
-            else return 0;
+        boolean a, b;
+        if(width%2 == 1){//se a largura for impar so interessa o numero de inversoes
+            a = (inversion(Node.createArray(source,height,width))%2 == 0);
+            b = (inversion(Node.createArray(objective,height,width))%2 == 0);
         }
+        else{
+            a = (inversion(Node.createArray(source,height,width))%2 == 0) == blankRowSolve(source,height);
+            b = (inversion(Node.createArray(objective,height,width))%2 == 0) == blankRowSolve(objective,height);
+        }
+        return (a == b);
     }
 
 
