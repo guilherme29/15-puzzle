@@ -31,12 +31,12 @@ class Puzzle{
       int height = stdin.nextInt();
       System.out.print("Largura do jogo:");
       int width = stdin.nextInt();
-      System.out.println("Solucao do jogo:");
-      Node alfa = new Node(height,width);
-      alfa = Node.scan(height, width, alfa, stdin, 0);
       System.out.println("Estado atual do jogo:");
       Node beta = new Node(height,width);
       beta = Node.scan(height, width, beta, stdin, 0);
+      System.out.println("Solucao do jogo:");
+      Node alfa = new Node(height,width);
+      alfa = Node.scan(height, width, alfa, stdin, 0);
 
       if(modes == 3){
         System.out.println("Profundidade Maxima:");
@@ -46,38 +46,38 @@ class Puzzle{
 
       switch(modes){
         case 1: Solve.hasSolution(beta, alfa, height, width);
-                if(Solve.Solvability(beta, alfa, height, width)!= -1 && Solve.Solvability(beta, alfa, height, width) != 0){
+                if(Solve.Solvability(beta, alfa, height, width)){
                   System.out.println("Resposta passo a passo:");
                   Algorithms.dfs(beta, alfa, height, width);
                 }
                 break;
         case 2: Solve.hasSolution(beta, alfa, height, width);
-                if(Solve.Solvability(beta, alfa, height, width)!= -1 && Solve.Solvability(beta, alfa, height, width) != 0){
+                if(Solve.Solvability(beta, alfa, height, width)){
                   System.out.println("Resposta passo a passo:");
                   Algorithms.bfs(beta, alfa, height, width);
                 }
                 break;
         case 3: Solve.hasSolution(beta, alfa, height, width);
-                if(Solve.Solvability(beta, alfa, height, width)!= -1 && Solve.Solvability(beta, alfa, height, width) != 0){
+                if(Solve.Solvability(beta, alfa, height, width)){
                   System.out.println("Tem Solucao");
                   System.out.println("Resposta passo a passo:");
                   Algorithms.ldfs_print(beta, alfa, height, width, maxdepth);
                 }
                 break;
         case 4: Solve.hasSolution(beta, alfa, height, width);
-                if(Solve.Solvability(beta, alfa, height, width)!= -1 && Solve.Solvability(beta, alfa, height, width) != 0){
+                if(Solve.Solvability(beta, alfa, height, width)){
                   System.out.println("Resposta passo a passo:");
                   Algorithms.idfs(beta, alfa, height, width);
                 }
                 break;
         case 5: Solve.hasSolution(beta, alfa, height, width);
-                if(Solve.Solvability(beta, alfa, height, width)!= -1 && Solve.Solvability(beta, alfa, height, width) != 0){
+                if(Solve.Solvability(beta, alfa, height, width)){
                   System.out.println("Resposta passo a passo:");
                   Algorithms.a_star(beta, alfa, height, width);
                 }
                 break;
         case 6: Solve.hasSolution(beta, alfa, height, width);
-                if(Solve.Solvability(beta, alfa, height, width)!= -1 && Solve.Solvability(beta, alfa, height, width) != 0){
+                if(Solve.Solvability(beta, alfa, height, width)){
                   System.out.println("Resposta passo a passo:");
                   Algorithms.greedy(beta, alfa, height, width);
                 }
@@ -91,3 +91,5 @@ class Puzzle{
     }while(modes != 7);
   }
 }
+// 1 2 3 4 5 6 8 12 13 9 0 7 14 11 10 15
+// 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0
